@@ -1,0 +1,18 @@
+1) npm init (all by default)
+2) npm i react react-dom --save
+3) app folder -> index.html
+4) .babelrc
+5) npm i babel-core babel-loader babel-preset-env babel-preset-react webpack --save-dev
+6) webpack.config.js
+7) app folder -> dev folder, dist folder -> js folder
+8) test app.js in dist/js folder
+9) server.js
+10) npm i express --save
+11) .gitignore
+12) git init
+13) create git repository
+14) configure express (server.js)
+15) try launch
+16) configure and test webpack
+17) test first react Component
+18) push to github
