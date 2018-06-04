@@ -16,7 +16,9 @@ module.exports = {
     extensions: ['.js', '.jsx'],
     modules: ['node_modules'],
     alias: {
-
+      '@app-components': path.resolve(jsDir, 'components'),
+      '@app-constants': path.resolve(jsDir, 'constants'),
+      '@app-firebase': path.resolve(jsDir, 'firebase'),
     }
   },
   module: {
@@ -26,7 +28,8 @@ module.exports = {
         exclude: /(node_modules)/,
         loader: 'babel-loader',
         options: {
-          presets: ['env', 'react']
+          presets: ['env', 'react'],
+          plugins: ['transform-object-rest-spread']
         }
       }
     ]
