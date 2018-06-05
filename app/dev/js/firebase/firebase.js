@@ -14,8 +14,10 @@ if (!firebase.apps.length) {
   firebase.initializeApp(config);
 }
 
+const provider = new firebase.auth.GithubAuthProvider();
 const auth = firebase.auth();
 
 export {
   auth,
+  provider,
 };
