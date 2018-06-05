@@ -12,6 +12,10 @@ app.use(function (req, res, next) {
   }
 });
 
+app.get('/*', (request, response) => {
+  response.redirect('/');
+});
+
 app.listen(PORT, () => {
   console.log(`Express is listening on port ${PORT}`);
 });
