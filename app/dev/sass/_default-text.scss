@@ -1,0 +1,41 @@
+// Default text
+.default-text {
+  line-height: 1.43;
+  font-size: get-font-size("small");
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 10px 0;
+    line-height: 1.43;
+  }
+  p {
+    margin-bottom: 10px;
+    color: get-color("mediumGray");
+    line-height: 1.43;
+    font-size: get-font-size("small");
+  }
+  h1, h2, h3, h4, h5, h6, strong, b {
+    font-weight: 700;
+  }
+  h1 {
+    font-size: get-font-size("large");
+  }
+  h2 {
+    font-size: get-font-size("big");
+  }
+  h3 {
+    font-size: get-font-size("medium");
+  }
+  h4 {
+    font-size: get-font-size("base");
+  }
+  h5 {
+    font-size: get-font-size("small");
+  }
+  h6 {
+    font-size: get-font-size("ultraSmall");
+  }
+  em, i {
+    font-style: italic;
+  }
+}
+// Default text (END)

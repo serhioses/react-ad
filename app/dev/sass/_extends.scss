@@ -1,0 +1,12 @@
+.transition {
+  transition: all 0.3s ease-in-out;
+}
+
+.clearfix {
+  &:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+  } 
+}

@@ -1,0 +1,31 @@
+.container {
+  margin: 0 auto;
+  padding: 0 $gutter / 2;
+  @extend .clearfix;
+  @media (min-width: 1024px) {
+    width: 980px;
+  }
+  @media (min-width: 1200px) {
+    width: 1170px;
+  }
+}
+
+.row {
+  margin: 0 -($gutter / 2);
+  font-size: 0;
+  @extend .clearfix;
+}
+
+.column {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  padding: 0 $gutter / 2;
+}
+
+@include generate-grid(null, "start");
+
+@for $i from 1 through length($screens) {
+  @include generate-grid(nth($screens, $i), nth($prefixes, $i));
+}
+

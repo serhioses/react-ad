@@ -1,0 +1,47 @@
+@mixin font-face ($font-family, $filename, $weight: 400, $style: normal, $local1: null, $local2: null) {
+  $list: ();
+
+  @if ($local1) {
+    $list: append($list, local($local1));
+  }
+  @if ($local2) {
+    $list: append($list, local($local2));
+  }
+  $list: append($list, url("../fonts/" + $filename + ".ttf"));
+  @font-face {
+    font-family: $font-family;
+    font-weight: $weight;
+    font-style: $style;
+    src: to-string($list, ", ") format("truetype");
+  }
+}
+
+@mixin generate-grid ($width, $prefix) {
+  @if ($width) {
+    @media (min-width: $width) {
+      @for $i from 1 through $columns {
+        .col-#{$prefix}-#{$i} {
+          width: to-fixed(percentage($i / $columns));
+        }
+      }
+      .hidden-#{$prefix} {
+        display: none !important;
+      }
+      .visible-#{$prefix} {
+        display: block !important;
+      }
+    }
+  } @else {
+    @for $i from 1 through $columns {
+      .col-#{$prefix}-#{$i} {
+        width: to-fixed(percentage($i / $columns));
+      }
+    }
+    .hidden-#{$prefix} {
+      display: none !important;
+    }
+    .visible-#{$prefix} {
+      display: block !important;
+    }
+  }
+}

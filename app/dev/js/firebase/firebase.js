@@ -1,5 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/database';
+import 'firebase/storage';
 
 const config = {
   apiKey: "AIzaSyAhbC5Cmmrrz5WXPfD7KW17R7JH54Wu0C0",
@@ -14,10 +16,15 @@ if (!firebase.apps.length) {
   firebase.initializeApp(config);
 }
 
+const firebaseRef = firebase.database().ref();
+
 const provider = new firebase.auth.GithubAuthProvider();
 const auth = firebase.auth();
+const storage = firebase.storage();
 
 export {
   auth,
   provider,
+  firebaseRef,
+  storage,
 };

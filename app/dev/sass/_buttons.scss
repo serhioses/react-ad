@@ -1,0 +1,96 @@
+// Buttons
+.button {
+  display: inline-block;
+  vertical-align: top;
+  outline: 0;
+  border: 0;
+  border-radius: 3px;
+  overflow: hidden;
+  background: none;
+  color: get-color("mediumGray");
+  line-height: normal;
+  font-family: unquote(get-font("main"));
+  text-align: center;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.15s ease-in-out;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  user-select: none;
+  &--default {
+    min-width: 64px;
+    height: 36px;
+    line-height: 36px;
+    font-size: get-font-size("small");
+  }
+  &--medium {
+      min-width: 80px;
+      height: 42px;
+      line-height: 42px;
+      font-size: get-font-size("base");
+  }
+  &--big {
+    min-width: 120px;
+    height: 48px;
+    line-height: 48px;
+    font-size: get-font-size("base");
+  }
+  &--flat {
+    padding: 0 8px;
+    background-color: get-color("white");
+    font-size: get-font-size("small");
+    font-weight: bold;
+    &_indigo {
+      color: get-color("indigo");
+    }
+    &_red {
+      color: get-color("red");
+    }
+    &_black {
+      color: get-color("black");
+    }
+    &_indent {
+      margin-right: 8px;
+    }
+  }
+  &--raised {
+    padding: 0 16px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    &_indigo {
+      background-color: get-color("indigo");
+      color: get-color("white");
+    }
+    &_dark-indigo {
+      background-color: get-color("darkIndigo");
+      color: get-color("white");
+    }
+    &_blue-gray {
+      background-color: get-color("blueGray");
+      color: get-color("white");
+    }
+    &_red {
+      background-color: get-color("red");
+      color: get-color("white");
+    }
+    &_medium-gray {
+      background-color: get-color("mediumGray");
+      color: get-color("white");
+    }
+    &:active {
+      box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.4);
+    }
+  }
+  &--full-width {
+    display: block;
+    width: 100%;
+  }
+  &__text {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+
+// Buttons (END)

@@ -1,8 +1,9 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static('app'));
+app.use(express.static('app/dist'));
 
 app.use(function (req, res, next) {
   if (req.headers['x-forwarded-proto'] === 'https') {
@@ -13,7 +14,8 @@ app.use(function (req, res, next) {
 });
 
 app.get('/*', (request, response) => {
-  response.redirect('/');
+  // response.redirect('/');
+  response.sendFile('index.html', { root: path.resolve(__dirname, 'app') });
 });
 
 app.listen(PORT, () => {

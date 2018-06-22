@@ -18,7 +18,11 @@ module.exports = {
     alias: {
       '@app-components': path.resolve(jsDir, 'components'),
       '@app-constants': path.resolve(jsDir, 'constants'),
+      '@app-routes': path.resolve(jsDir, 'routes'),
       '@app-firebase': path.resolve(jsDir, 'firebase'),
+      '@app-actions': path.resolve(jsDir, 'actions'),
+      '@app-reducers': path.resolve(jsDir, 'reducers'),
+      '@app-store': path.resolve(jsDir, 'store'),
     }
   },
   module: {
@@ -29,7 +33,7 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           presets: ['env', 'react'],
-          plugins: ['transform-object-rest-spread']
+          plugins: ['transform-object-rest-spread', 'syntax-async-functions', 'transform-regenerator']
         }
       }
     ]

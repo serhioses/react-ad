@@ -1,0 +1,34 @@
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+*:focus {
+  outline: 0;
+}
+
+textarea {
+  resize: none;
+}
+
+label {
+  display: block;
+}
+
+form {
+  display: inline;
+}
+
+img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+}
+
+.bg-image {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+// General (END)
