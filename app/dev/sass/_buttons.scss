@@ -86,6 +86,12 @@
     display: block;
     width: 100%;
   }
+  &--state {
+    &_loading {
+      opacity: 0.4;
+      cursor: default;
+    }
+  }
   &__text {
     position: relative;
     z-index: 2;

@@ -1,0 +1,18 @@
+// Constants
+.c-flex {
+  display: flex;
+  &--ai {
+    &_center {
+      align-items: center;
+    }
+  }
+}
+
+.c-relative {
+  position: relative;
+}
+
+.c-text-center {
+  text-align: center;
+}
+// Constants (END)

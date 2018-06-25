@@ -1,17 +1,14 @@
 const gulp = require('gulp'),
   autoprefixer = require('gulp-autoprefixer'),
   cssmin = require('gulp-cssmin'),
-  debug = require('gulp-debug'),
-  imagemin = require('gulp-imagemin'),
-  newer = require('gulp-newer'),
   rename = require('gulp-rename'),
   sass = require('gulp-ruby-sass'),
   watch = require('gulp-watch');
 
 const path = require('path');
 
-const devDir = path.resolve(__dirname, 'src'),
-  distDir = path.resolve(__dirname, 'public/assets'),
+const devDir = path.resolve(__dirname, 'app/dev'),
+  distDir = path.resolve(__dirname, 'app/dist'),
   paths = {
       sass: path.resolve(devDir, 'sass'),
       cssDev: path.resolve(devDir, 'css'),
@@ -26,9 +23,11 @@ gulp.task('styles', function () {
   return sass(paths.sass + '/style.scss', {
     style: 'expanded',
     loadPath: [paths.sass]
-  }).pipe(autoprefixer({
-    browsers
-  })).pipe(gulp.dest(paths.cssDist));
+  })
+    .pipe(autoprefixer({
+      browsers
+    }))
+    .pipe(gulp.dest(paths.cssDist));
 });
 
 gulp.task('watch', function () {

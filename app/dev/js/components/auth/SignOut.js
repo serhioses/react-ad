@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { startSignOut } from '@app-actions';
+import { startSignOut } from '@app-actions/auth';
 
 export class SignOut extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ export class SignOut extends React.Component {
   };
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   startSignOut,
 }, dispatch);
 

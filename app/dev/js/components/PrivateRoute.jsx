@@ -12,16 +12,15 @@ import { bindActionCreators } from 'redux';
 import Loading from '@app-components/Loading';
 
 import * as routes from '@app-constants/routes';
+import { PROFILE_STATE_PENDING } from '@app-constants/auth';
 
 const PrivateRoute = ({ component: Component, profile, ...rest }) => {
-  // let profile = store.getState().profile;
-  console.log('private route render');
   return <Route
     {...rest}
     render={(props) => {
-      if (profile === 'pending') {
-        // return <Loading from={props.location} />
-        return <div>Loading a;fsdf</div>;
+      if (profile === PROFILE_STATE_PENDING) {
+        // return <Loading from={props.location} />;
+        return <Loading message="Please, wait..." />;
       } else if (profile) {
         return <Component {...props} />;
       }

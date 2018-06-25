@@ -3,7 +3,9 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { startSignIn } from '@app-actions';
+import { startSignIn } from '@app-actions/auth';
+import { getProfile } from '@app-selectors/auth';
+import { getRefferer } from '@app-selectors';
 import { HOME } from '@app-constants/routes';
 
 export class SignInPage extends React.Component {
@@ -19,13 +21,15 @@ export class SignInPage extends React.Component {
   }
 
   render() {
-    if (this.props.profile) {
+    if (this.props.profile && this.props.profile.email) {
       return <Redirect to={this.props.refferer} />;
     }
 
     return (
-      <div>
-        <button type="button" onClick={this.signIn}>SIGN IN WITH GITHUB</button>
+      <div className="content c-flex c-flex--ai_center">
+        <div className="auth text-center">
+          <button className="button button--default button--raised button--raised_indigo" type="button" onClick={this.signIn}>SIGN IN WITH GITHUB</button>
+        </div>
       </div>
     );
   };
@@ -33,12 +37,12 @@ export class SignInPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    profile: state.profile,
-    refferer: state.refferer,
+    profile: getProfile(state),
+    refferer: getRefferer(state),
   }
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   startSignIn,
 }, dispatch);
 

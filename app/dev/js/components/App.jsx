@@ -8,15 +8,18 @@ import { Provider } from 'react-redux';
 
 // components
 import Header from '@app-components/header/Header';
+import Footer from '@app-components/footer/Footer';
 import SignInPage from '@app-components/auth/SignIn';
 import SignOut from '@app-components/auth/SignOut';
 import HomePage from '@app-components/Home';
 import ManagePhotograph from '@app-components/photograph/ManagePhotograph';
+import Dashboard from '@app-components/photograph/Dashboard';
 import PrivateRoute from '@app-components/PrivateRoute';
 import Loading from '@app-components/Loading';
 
 import * as routes from '@app-constants/routes';
-import * as actions from '@app-actions';
+import { startAuthStateChange } from '@app-actions/auth';
+import { startGetPhotographs } from '@app-actions/photograph';
 import { firebase } from '@app-firebase';
 import configureStore from '@app-store';
 
@@ -26,16 +29,14 @@ store.subscribe(() => {
 
   console.log(state);
 });
-store.dispatch(actions.startAuthStateChange());
+store.dispatch(startAuthStateChange());
+store.dispatch(startGetPhotographs());
 
 const App = () => {
   return <Provider store={store}>
     <Router>
-      <div>
+      <div className="wrapper">
         <Header />
-
-        <hr/>
-
         <Route
           exact path={routes.SIGN_IN}
           component={SignInPage}
@@ -50,6 +51,11 @@ const App = () => {
         />
         <PrivateRoute exact path={routes.PHOTOGRAPH_MANAGE}
           component={ManagePhotograph} />
+        <Route
+          exact path={routes.DASHBOARD}
+          component={Dashboard}
+        />
+        <Footer />
       </div>
     </Router>
   </Provider>;

@@ -1,5 +1,26 @@
 // Header
 .header {
+  height: 60px;
+  background-color: get-color("indigo");
+  line-height: 60px;
+  font-size: 0;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
+}
 
+.account {
+  height: 60px;
+  color: get-color("white");
+  float: right;
+  &__link {
+    font-size: get-font-size("small");
+  }
+  &__photo {
+    margin-right: 16px;
+    border: 2px solid get-color("blueGray");
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    background-color: get-color("blueGray");
+  }
 }
 // Header (END)

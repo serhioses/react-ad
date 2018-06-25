@@ -12,10 +12,15 @@ html {
 }
 
 body {
-  background-color: get-color("darkGray");
+  background-color: get-color("white");
+  color: get-color("darkGray");
   font-family: get-font("main");
   font-size: 100%;
   -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+  height: 100%;
 }
 
 .wrapper {
@@ -26,5 +31,6 @@ body {
 
 .content {
   flex: 1 0 auto;
+  padding: 40px 0;
 }
 // Layout (END)

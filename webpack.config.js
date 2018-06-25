@@ -22,6 +22,7 @@ module.exports = {
       '@app-firebase': path.resolve(jsDir, 'firebase'),
       '@app-actions': path.resolve(jsDir, 'actions'),
       '@app-reducers': path.resolve(jsDir, 'reducers'),
+      '@app-selectors': path.resolve(jsDir, 'selectors'),
       '@app-store': path.resolve(jsDir, 'store'),
     }
   },

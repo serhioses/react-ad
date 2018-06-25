@@ -1,0 +1,22 @@
+// Photograph
+.photograph {
+  &__preview {
+    margin-bottom: 48px;
+    border: 4px solid get-color("lightGray");
+    padding-bottom: 60%;
+    background-color: get-color("white");
+  }
+  &__form {
+    margin: 0 auto;
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .photograph {
+    &__preview {
+      padding-bottom: 70vh;
+    }
+  }
+}
+// Photograph (END)

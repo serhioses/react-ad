@@ -1,0 +1,97 @@
+// Nav
+.nav-trigger {
+  width: 48px;
+  color: get-color("white");
+  font-size: 0;
+  position: relative;
+  z-index: 10;
+  &--active {
+    color: get-color("darkGray");
+  }
+}
+.nav {
+  width: 260px;
+  height: 100%;
+  padding: 60px 24px 40px;
+  overflow-y: auto;
+  visibility: hidden;
+  opacity: 0;
+  background-color: get-color("white");
+  color: get-color("mediumGray");
+  line-height: normal;
+  position: fixed;
+  top: 0;
+  left: -260px;
+  z-index: 9;
+  box-shadow: 0px 8px 10px -5px rgba(0,0,0,0.2), 0px 16px 24px 2px rgba(0,0,0,0.14), 0px 6px 30px 5px rgba(0,0,0,0.12);
+  @extend .transition;
+  &--active {
+    visibility: visible;
+    opacity: 1;
+    left: 0;
+  }
+  &__link {
+    display: table;
+    margin-bottom: 12px;
+    line-height: to-rem(22);
+    font-size: get-font-size("base");
+    font-weight: 700;
+    text-transform: uppercase;
+    &--active {
+      color: get-color("darkGray");
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+.nav-overlay {
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  opacity: 0;
+  background-color: rgba(0,0,0,0.4);
+  position: fixed;
+  top: 0;
+  left: -100%;
+  z-index: 8;
+  cursor: pointer;
+  @extend .transition;
+  &--active {
+    visibility: visible;
+    opacity: 1;
+    left: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: flex;
+    align-items: center;
+    width: auto;
+    height: 60px;
+    padding: 0;
+    visibility: visible;
+    opacity: 1;
+    background: none;
+    color: get-color("white");
+    float: left;
+    position: static;
+    transition: none;
+    box-shadow: none;
+    &__link {
+      display: block;
+      margin-right: 16px;
+      margin-bottom: 0;
+      font-size: get-font-size("small");
+      &--active {
+        color: get-color("white");
+        text-decoration: underline;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+// Nav (END)
