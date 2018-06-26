@@ -3,4 +3,5 @@ export const SIGN_OUT = '/signout';
 export const HOME = '/';
 export const ABOUT = '/about';
 export const DASHBOARD = '/dashboard';
-export const PHOTOGRAPH_MANAGE = '/photograph/manage';
+export const PHOTOGRAPH_CREATE = '/photograph/create';
+export const PHOTOGRAPH_EDIT = '/photograph/edit';

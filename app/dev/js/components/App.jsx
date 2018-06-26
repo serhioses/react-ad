@@ -1,10 +1,12 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  Router,
   Route,
   Redirect
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
+
+import history from '@app-history';
 
 // components
 import Header from '@app-components/header/Header';
@@ -34,7 +36,7 @@ store.dispatch(startGetPhotographs());
 
 const App = () => {
   return <Provider store={store}>
-    <Router>
+    <Router history={history}>
       <div className="wrapper">
         <Header />
         <Route
@@ -49,7 +51,9 @@ const App = () => {
           exact path={routes.SIGN_OUT}
           component={SignOut}
         />
-        <PrivateRoute exact path={routes.PHOTOGRAPH_MANAGE}
+        <PrivateRoute exact path={routes.PHOTOGRAPH_CREATE}
+          component={ManagePhotograph} />
+        <PrivateRoute exact path={`${routes.PHOTOGRAPH_EDIT}/:id`}
           component={ManagePhotograph} />
         <Route
           exact path={routes.DASHBOARD}

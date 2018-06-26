@@ -9,6 +9,10 @@ export class Dashboard extends React.Component {
     super(props);
   }
 
+  componentDidMount() {
+    
+  }
+
   render() {
     const { photographs } = this.props;
 

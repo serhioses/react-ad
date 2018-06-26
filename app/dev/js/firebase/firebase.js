@@ -21,10 +21,12 @@ const firebaseRef = firebase.database().ref();
 const provider = new firebase.auth.GithubAuthProvider();
 const auth = firebase.auth();
 const storage = firebase.storage();
+const storageRef = storage.ref();
 
 export {
   auth,
   provider,
   firebaseRef,
   storage,
+  storageRef,
 };

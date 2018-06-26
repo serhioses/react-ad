@@ -47,7 +47,7 @@ export default class Nav extends React.Component {
         <nav className={`nav ${isOpen ? "nav--active" : ""}`}>
           <NavLink className="nav__link" activeClassName="nav__link--active" exact to={routes.HOME}>Home</NavLink>
           <NavLink className="nav__link" activeClassName="nav__link--active" to={routes.ABOUT}>About</NavLink>
-          <NavLink className="nav__link" activeClassName="nav__link--active" to={routes.PHOTOGRAPH_MANAGE}>Add Photograph</NavLink>
+          <NavLink className="nav__link" activeClassName="nav__link--active" to={routes.PHOTOGRAPH_CREATE}>Add Photograph</NavLink>
           <NavLink className="nav__link" activeClassName="nav__link--active" to={routes.DASHBOARD}>Dashboard</NavLink>
         </nav>
         <div className={`nav-overlay ${isOpen ? "nav-overlay--active" : ""} hidden-sm`} onClick={this.toggleNav}></div>

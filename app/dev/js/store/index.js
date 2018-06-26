@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 
 // import { userReducer, reffererReducer, loadingStateReducer, photographReducer } from '@app-reducers';
 import { userReducer, reffererReducer } from '@app-reducers/auth';
-import { photographReducer } from '@app-reducers/photograph';
+import { photographsReducer, photographReducer } from '@app-reducers/photograph';
 import { loadingStateReducer } from '@app-reducers';
 
 export default (function () {
@@ -20,7 +20,8 @@ export default (function () {
       profile: userReducer,
       refferer: reffererReducer,
       loadingState: loadingStateReducer,
-      photographs: photographReducer,
+      photographs: photographsReducer,
+      currentPhotograph: photographReducer,
     });
 
     store = redux.createStore(reducer, initialState, redux.compose(

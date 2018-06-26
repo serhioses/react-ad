@@ -24,6 +24,7 @@ module.exports = {
       '@app-reducers': path.resolve(jsDir, 'reducers'),
       '@app-selectors': path.resolve(jsDir, 'selectors'),
       '@app-store': path.resolve(jsDir, 'store'),
+      '@app-history': path.resolve(jsDir, 'history')
     }
   },
   module: {
