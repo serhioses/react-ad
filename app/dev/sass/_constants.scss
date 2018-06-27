@@ -6,6 +6,11 @@
       align-items: center;
     }
   }
+  &--jc {
+    &_center {
+      justify-content: center;
+    }
+  }
 }
 
 .c-relative {
@@ -14,5 +19,8 @@
 
 .c-text-center {
   text-align: center;
+}
+.c-text-right {
+  text-align: right;
 }
 // Constants (END)

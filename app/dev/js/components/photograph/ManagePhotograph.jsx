@@ -4,12 +4,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Loading from '@app-components/Loading';
+import ConfirmRemoveModal from './ConfirmRemoveModal';
 
 import {
   startPublishPhotograph,
   startGetPhotograph,
   clearCurrentPhotograph,
-  startDeletePhotographFile
+  startDeletePhotographFile,
+  startUpdatePhotograph,
+  startRemovePhotograph
 } from '@app-actions/photograph';
 import { getPhotograph } from '@app-selectors/photograph';
 
@@ -28,6 +31,9 @@ export class ManagePhotograph extends React.Component {
     this.onFileChange = this.onFileChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.removeFile = this.removeFile.bind(this);
+    this.showModal = this.showModal.bind(this);
+    this.cancel = this.cancel.bind(this);
+    this.confirm = this.confirm.bind(this);
   }
 
   static crop(file, cb) {
@@ -107,28 +113,58 @@ export class ManagePhotograph extends React.Component {
       processing: true,
     });
 
-    ManagePhotograph.crop(this.state.file, (thumb) => {
-      if (this.props.currentPhotograph) {
-        this.props.startUpdatePhotograph({
-          thumb,
-          file: this.state.file,
-          name: this.state.name,
-          desc: this.state.desc,
-          id: this.props.currentPhotograph && this.props.currentPhotograph.id,
-          fileToRemove: this.state.fileToRemove,
+    if (this.props.currentPhotograph) {
+      if (this.state.fileToRemove) {
+        ManagePhotograph.crop(this.state.file, (thumb) => {
+          this.props.startUpdatePhotograph({
+            thumb,
+            file: this.state.file,
+            name: this.state.name,
+            desc: this.state.desc,
+            id: this.props.currentPhotograph.id,
+            fileToRemove: this.state.fileToRemove,
+          });
         });
       } else {
+        this.props.startUpdatePhotograph({
+          name: this.state.name,
+          desc: this.state.desc,
+          id: this.props.currentPhotograph.id,
+        });
+      }
+    } else {
+      ManagePhotograph.crop(this.state.file, (thumb) => {
         this.props.startPublishPhotograph({
           thumb,
           file: this.state.file,
           name: this.state.name,
           desc: this.state.desc,
-          // isUpdate: !!this.props.currentPhotograph,
-          // id: this.props.currentPhotograph && this.props.currentPhotograph.id,
-          // fileToRemove: this.state.fileToRemove,
         });
-      }
-    });
+      });
+    }
+
+    // ManagePhotograph.crop(this.state.file, (thumb) => {
+    //   if (this.props.currentPhotograph) {
+    //     this.props.startUpdatePhotograph({
+    //       thumb,
+    //       file: this.state.file,
+    //       name: this.state.name,
+    //       desc: this.state.desc,
+    //       id: this.props.currentPhotograph.id,
+    //       fileToRemove: this.state.fileToRemove,
+    //     });
+    //   } else {
+    //     this.props.startPublishPhotograph({
+    //       thumb,
+    //       file: this.state.file,
+    //       name: this.state.name,
+    //       desc: this.state.desc,
+    //       // isUpdate: !!this.props.currentPhotograph,
+    //       // id: this.props.currentPhotograph && this.props.currentPhotograph.id,
+    //       // fileToRemove: this.state.fileToRemove,
+    //     });
+    //   }
+    // });
   }
 
   onFileChange(e) {
@@ -173,6 +209,27 @@ export class ManagePhotograph extends React.Component {
     // console.log(this.props.currentPhotograph.fileName);
   }
 
+  showModal() {
+    this.setState({
+      showConfirmRemoveModal: true,
+    });
+  }
+
+  cancel() {
+    this.setState({
+      showConfirmRemoveModal: false,
+    });
+  }
+
+  confirm() {
+    this.setState({
+      showConfirmRemoveModal: false,
+      processing: true,
+    });
+
+    this.props.startRemovePhotograph(this.props.currentPhotograph.id, this.props.currentPhotograph.fileName);
+  }
+
   render() {
     // delete on submit
     // separate publish from update
@@ -204,6 +261,14 @@ export class ManagePhotograph extends React.Component {
         </button>
     };
 
+    const renderRemovePhotograph = () => {
+      return !currentPhotograph ?
+        null :
+        <button className={`photograph__remove-btn button button--default button--flat button--flat_red ${this.state.processing ? "button--state_loading" : null}`} type="button" disabled={this.state.processing} onClick={this.showModal}>
+          Remove photograph
+        </button>;
+    }
+
     return (
       <div className="content">
         <div className="container">
@@ -223,14 +288,16 @@ export class ManagePhotograph extends React.Component {
                   {this.state.descError ? <p className="form-error">Please, enter a photograph description.</p> : null}
                 </div>
                 <div className="form-group c-text-center">
-                  <button className={`button button--big button--raised button--raised_indigo ${this.state.processing ? "button--state_loading" : null}`} type="submit" disabled={this.state.processing}>
-                    {currentPhotograph ? "Upadte" : "Publish"}
+                  <button className={`button button--default button--raised button--raised_indigo ${this.state.processing ? "button--state_loading" : null}`} type="submit" disabled={this.state.processing}>
+                      {currentPhotograph ? "Upadte" : "Publish"}
                   </button>
+                  {renderRemovePhotograph()}
                 </div>
               </div>
             </form>
           </div>
         </div>
+        {this.state.showConfirmRemoveModal ? <ConfirmRemoveModal isOpen={true} onClose={this.cancel} onConfirm={this.confirm} /> : null}
       </div>
     );
   }
@@ -247,6 +314,8 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   startGetPhotograph,
   clearCurrentPhotograph,
   startDeletePhotographFile,
+  startUpdatePhotograph,
+  startRemovePhotograph,
 }, dispatch);
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ManagePhotograph));

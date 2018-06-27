@@ -2,7 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import PhotographCard from './PhotographCard';
+
+import { startGetPhotographs } from '@app-actions/photograph';
 import { getPhotographs } from '@app-selectors/photograph';
+import { getProfile } from '@app-selectors/auth';
 
 export class Dashboard extends React.Component {
   constructor(props) {
@@ -10,24 +14,32 @@ export class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    
+    if (!this.props.photographs) {
+      this.props.startGetPhotographs();
+    }
   }
 
   render() {
-    const { photographs } = this.props;
+    const { photographs, profile } = this.props;
 
     const renderPhotographs = () => {
+      if (!photographs) {
+        return null;
+      }
+
       return photographs.map((photograph, i) => {
-        return <div key={i}>
-          <img src={photograph.thumb} alt="" />
-          <p>{photograph.name}</p>
-          <p>{photograph.desc}</p>
-        </div>;
+        return <PhotographCard key={i} {...photograph} profileId={profile && profile.uid} />;
       });
     };
 
     return (
-      renderPhotographs()
+      <div className="content">
+        <div className="container">
+          <div className="row">
+            {renderPhotographs()}
+          </div>
+        </div>
+      </div>
     );
   };
 }
@@ -35,11 +47,12 @@ export class Dashboard extends React.Component {
 const mapStateToProps = (state) => {
   return {
     photographs: getPhotographs(state),
+    profile: getProfile(state),
   }
 };
 
-// const mapDispatchToProps = (dispatch) => bindActionCreators({
-//   startPublishPhotograph,
-// }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  startGetPhotographs,
+}, dispatch);
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

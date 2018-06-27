@@ -45,10 +45,10 @@ export default class Nav extends React.Component {
           {renderNavIcon()}
         </button>
         <nav className={`nav ${isOpen ? "nav--active" : ""}`}>
-          <NavLink className="nav__link" activeClassName="nav__link--active" exact to={routes.HOME}>Home</NavLink>
-          <NavLink className="nav__link" activeClassName="nav__link--active" to={routes.ABOUT}>About</NavLink>
-          <NavLink className="nav__link" activeClassName="nav__link--active" to={routes.PHOTOGRAPH_CREATE}>Add Photograph</NavLink>
-          <NavLink className="nav__link" activeClassName="nav__link--active" to={routes.DASHBOARD}>Dashboard</NavLink>
+          <NavLink className="nav__link" activeClassName="nav__link--active" exact to={routes.HOME} onClick={this.toggleNav}>Home</NavLink>
+          <NavLink className="nav__link" activeClassName="nav__link--active" to={routes.ABOUT} onClick={this.toggleNav}>About</NavLink>
+          <NavLink className="nav__link" activeClassName="nav__link--active" to={routes.PHOTOGRAPH_CREATE} onClick={this.toggleNav}>Add Photograph</NavLink>
+          <NavLink className="nav__link" activeClassName="nav__link--active" to={routes.DASHBOARD} onClick={this.toggleNav}>Dashboard</NavLink>
         </nav>
         <div className={`nav-overlay ${isOpen ? "nav-overlay--active" : ""} hidden-sm`} onClick={this.toggleNav}></div>
       </React.Fragment>

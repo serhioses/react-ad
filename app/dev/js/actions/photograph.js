@@ -6,10 +6,12 @@ import {
   PHOTOGRAPHS_GET,
   PHOTOGRAPH_GET,
   PHOTOGRAPH_CLEAR,
-  PHOTOGRAPH_UPDATE
+  PHOTOGRAPH_UPDATE,
+  PHOTOGRAPH_REMOVE
 } from '@app-constants/photograph';
-import { PHOTOGRAPH_EDIT } from '@app-constants/routes';
+import { PHOTOGRAPH_EDIT, PHOTOGRAPH_CREATE as PHOTOGRAPH_CREATE_ROUTE } from '@app-constants/routes';
 import { getPhotograph as getPhotographSelector } from '@app-selectors/photograph';
+import { getProfile } from '@app-selectors/auth';
 
 export const startPublishPhotograph = (data) => {
   return async (dispatch, getState) => {
@@ -27,7 +29,7 @@ export const startPublishPhotograph = (data) => {
       fileName: data.file.name,
       name: data.name,
       desc: data.desc,
-      createdAt: new Date(),
+      createdAt: Date.now(),
     };
 
     let phRef = await firebase.firebaseRef.child(`photographs`).push(ph);
@@ -37,15 +39,57 @@ export const startPublishPhotograph = (data) => {
       id: phRef.key,
     };
 
-    if (data.isUpdate) {
-      dispatch(updatePhotograph(fullPhotograph));
-      dispatch(startDeletePhotographFile(data.fileToRemove));
-    } else {
-      dispatch(createPhotograph(fullPhotograph));
-    }
+    // if (data.isUpdate) {
+    //   dispatch(updatePhotograph(fullPhotograph));
+    //   dispatch(startDeletePhotographFile(data.fileToRemove));
+    // } else {
+      
+    // }
+    dispatch(createPhotograph(fullPhotograph));
     // dispatch(getPhotograph(fullPhotograph));
 
     history.push(`${PHOTOGRAPH_EDIT}/${phRef.key}`);
+  };
+};
+
+export const startUpdatePhotograph = (data) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const profile = getProfile(state);
+    const currentPhotograph = getPhotographSelector(state);
+    const photographRef = firebase.firebaseRef.child(`photographs/${data.id}`);
+    const storageRef = firebase.storageRef;
+    let updates;
+
+    if (data.fileToRemove) {
+      await firebase.storageRef.child(`${profile.uid}/images/${data.fileToRemove}`).delete();
+      await firebase.storageRef.child(`${profile.uid}/thumbs/${data.fileToRemove}`).delete();
+
+      const originalSnapshot = await storageRef.child(`${profile.uid}/images/${data.file.name}`).put(data.file);
+
+      const thumbSnapshot = await storageRef.child(`${profile.uid}/thumbs/${data.file.name}`).putString(data.thumb, 'data_url');
+
+      updates = {
+        name: data.name,
+        desc: data.desc,
+        original: originalSnapshot.downloadURL,
+        thumb: thumbSnapshot.downloadURL,
+        fileName: data.file.name,
+      };
+    } else {
+      updates = {
+        name: data.name,
+        desc: data.desc,
+      };
+    }
+
+    await photographRef.update(updates);
+
+    dispatch(updatePhotograph(updates, data.id));
+    dispatch(getPhotograph({
+      ...currentPhotograph,
+      ...updates,
+    }));
   };
 };
 
@@ -56,10 +100,13 @@ export const createPhotograph = (ph) => {
   };
 };
 
-export const updatePhotograph = (ph) => {
+export const updatePhotograph = (updates, id) => {
   return {
     type: PHOTOGRAPH_UPDATE,
-    payload: ph,
+    payload: {
+      updates,
+      id,
+    },
   };
 };
 
@@ -86,7 +133,10 @@ export const startGetPhotograph = (id) => {
       const photograph = snapshot.val();
 
       if (photograph) {
-        dispatch(getPhotograph(photograph));
+        dispatch(getPhotograph({
+          ...photograph,
+          id,
+        }));
       }
     });
   };
@@ -129,5 +179,27 @@ const getPhotographs = (photographs) => {
   return {
     type: PHOTOGRAPHS_GET,
     payload: photographs,
+  }
+};
+
+export const startRemovePhotograph = (id, fileName) => {
+  return async (dispatch, getState) => {
+    const profile = getProfile(getState());
+
+    await firebase.firebaseRef.child(`photographs/${id}`).remove();
+
+    await firebase.storageRef.child(`${profile.uid}/images/${fileName}`).delete();
+    await firebase.storageRef.child(`${profile.uid}/thumbs/${fileName}`).delete();
+
+    dispatch(removePhotograph(id));
+
+    history.replace(`${PHOTOGRAPH_CREATE_ROUTE}`);
+  };
+};
+
+export const removePhotograph = (id) => {
+  return {
+    type: PHOTOGRAPH_REMOVE,
+    payload: id,
   }
 };

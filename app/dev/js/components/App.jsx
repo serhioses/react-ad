@@ -32,7 +32,7 @@ store.subscribe(() => {
   console.log(state);
 });
 store.dispatch(startAuthStateChange());
-store.dispatch(startGetPhotographs());
+// store.dispatch(startGetPhotographs());
 
 const App = () => {
   return <Provider store={store}>
