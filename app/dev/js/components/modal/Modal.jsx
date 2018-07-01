@@ -12,6 +12,14 @@ export default class Modal extends React.Component {
     this.open = this.open.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (typeof nextProps.isOpen !== 'undefined') {
+      this.setState({
+        isOpen: nextProps.isOpen,
+      });
+    }
+  }
+
   open() {
     this.setState({
       isOpen: true,
@@ -36,7 +44,7 @@ export default class Modal extends React.Component {
 
     return (
       <div className={`modal ${this.state.isOpen ? "modal--active" : ""}`} onClick={this.close}>
-        <div className="modal__window">
+        <div className={`modal__window ${this.state.isOpen ? "modal__window--active" : ""}`}>
           {clonedChildren}
         </div>
       </div>

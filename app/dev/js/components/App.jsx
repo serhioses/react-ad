@@ -15,6 +15,7 @@ import SignInPage from '@app-components/auth/SignIn';
 import SignOut from '@app-components/auth/SignOut';
 import HomePage from '@app-components/Home';
 import ManagePhotograph from '@app-components/photograph/ManagePhotograph';
+import PhotographView from '@app-components/photograph/PhotographView';
 import Dashboard from '@app-components/photograph/Dashboard';
 import PrivateRoute from '@app-components/PrivateRoute';
 import Loading from '@app-components/Loading';
@@ -55,6 +56,8 @@ const App = () => {
           component={ManagePhotograph} />
         <PrivateRoute exact path={`${routes.PHOTOGRAPH_EDIT}/:id`}
           component={ManagePhotograph} />
+          <PrivateRoute exact path={`${routes.PHOTOGRAPH_VIEW}/:id`}
+          component={PhotographView} />
         <Route
           exact path={routes.DASHBOARD}
           component={Dashboard}

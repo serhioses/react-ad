@@ -15,6 +15,7 @@ import {
   startRemovePhotograph
 } from '@app-actions/photograph';
 import { getPhotograph } from '@app-selectors/photograph';
+import { PHOTOGRAPH_THUMB_WIDTH, PHOTOGRAPH_THUMB_HEIGHT } from '@app-constants/photograph';
 
 export class ManagePhotograph extends React.Component {
   constructor(props) {
@@ -45,13 +46,10 @@ export class ManagePhotograph extends React.Component {
       const img = new Image();
 
       img.onload = function () {
-        canvas.width = 640;
-        canvas.height = 480;
+        canvas.width = PHOTOGRAPH_THUMB_WIDTH;
+        canvas.height = PHOTOGRAPH_THUMB_HEIGHT;
 
-        const sx = img.naturalWidth / 2 - 640 / 2;
-        const sy = img.naturalHeight / 2 - 480 / 2;
-
-        ctx.drawImage(img, sx, sy, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
         cb(canvas.toDataURL('image/jpeg'));
       };
@@ -297,7 +295,8 @@ export class ManagePhotograph extends React.Component {
             </form>
           </div>
         </div>
-        {this.state.showConfirmRemoveModal ? <ConfirmRemoveModal isOpen={true} onClose={this.cancel} onConfirm={this.confirm} /> : null}
+        {/*{this.state.showConfirmRemoveModal ? <ConfirmRemoveModal isOpen={true} onClose={this.cancel} onConfirm={this.confirm} /> : null}*/}
+        <ConfirmRemoveModal isOpen={this.state.showConfirmRemoveModal} onClose={this.cancel} onConfirm={this.confirm} />
       </div>
     );
   }

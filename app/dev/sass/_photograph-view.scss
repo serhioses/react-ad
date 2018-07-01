@@ -1,0 +1,12 @@
+// Photograph view
+.photograph-view {
+  &__image {
+    margin-bottom: 48px;
+    max-height: 768px;
+  }
+  &__desc {
+    line-height: 1.43;
+    font-size: get-font-size("big");
+  }
+}
+// Photograph view (END)
