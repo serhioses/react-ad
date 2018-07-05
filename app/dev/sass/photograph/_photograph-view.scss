@@ -2,8 +2,12 @@
 .photograph-view {
   &__image {
     margin-bottom: 48px;
-    max-height: 768px;
-    overflow: hidden;
+    text-align: center;
+  }
+  &__date {
+    margin-bottom: 24px;
+    color: get-color("mediumGray");
+    font-size: get-font-size("base");
   }
   &__desc {
     line-height: 1.43;

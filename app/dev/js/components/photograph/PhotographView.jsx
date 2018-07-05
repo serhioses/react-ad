@@ -51,6 +51,9 @@ export class PhotographView extends React.Component {
             <div className="photograph-view__image bg-image">
               <img src={photograph.original} alt="" />
             </div>
+            <p className="photograph-view__date">
+              Created at: <time>{(new Date(photograph.createdAt)).toLocaleString('en')}</time>
+            </p>
             <div className="photograph-view__desc">
               {photograph.desc}
             </div>
