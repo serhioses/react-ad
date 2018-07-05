@@ -37,5 +37,11 @@
   em, i {
     font-style: italic;
   }
+  a {
+    color: get-color("indigo");
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 // Default text (END)

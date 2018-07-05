@@ -1,10 +1,8 @@
 import * as redux from 'redux';
 import thunk from 'redux-thunk';
 
-// import { userReducer, reffererReducer, loadingStateReducer, photographReducer } from '@app-reducers';
 import { userReducer, reffererReducer } from '@app-reducers/auth';
 import { photographsReducer, photographReducer } from '@app-reducers/photograph';
-import { loadingStateReducer } from '@app-reducers';
 
 export default (function () {
   let store;
@@ -19,7 +17,6 @@ export default (function () {
     reducer = redux.combineReducers({
       profile: userReducer,
       refferer: reffererReducer,
-      loadingState: loadingStateReducer,
       photographs: photographsReducer,
       currentPhotograph: photographReducer,
     });

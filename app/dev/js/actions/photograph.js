@@ -7,7 +7,9 @@ import {
   PHOTOGRAPH_GET,
   PHOTOGRAPH_CLEAR,
   PHOTOGRAPH_UPDATE,
-  PHOTOGRAPH_REMOVE
+  PHOTOGRAPH_REMOVE,
+  PHOTOGRAPH_FAIL,
+  PHOTOGRAPHS_FAIL
 } from '@app-constants/photograph';
 import { PHOTOGRAPH_EDIT, PHOTOGRAPH_CREATE as PHOTOGRAPH_CREATE_ROUTE } from '@app-constants/routes';
 import { getPhotograph as getPhotographSelector } from '@app-selectors/photograph';
@@ -15,38 +17,32 @@ import { getProfile } from '@app-selectors/auth';
 
 export const startPublishPhotograph = (data) => {
   return async (dispatch, getState) => {
-    let storageRef = firebase.storageRef;
-    let userId = getState().profile.uid;
+    const storageRef = firebase.storageRef;
+    const userId = getState().profile.uid;
 
-    let snapshot1 = await storageRef.child(`${userId}/images/${data.file.name}`).put(data.file);
+    const originalSnapshot = await storageRef.child(`${userId}/images/${data.file.name}`).put(data.file);
 
-    let snapshot2 = await storageRef.child(`${userId}/thumbs/${data.file.name}`).putString(data.thumb, 'data_url');
+    const thumbSnapshot = await storageRef.child(`${userId}/thumbs/${data.file.name}`).putString(data.thumb, 'data_url');
 
-    let ph = {
+    const ph = {
       userId,
-      original: snapshot1.downloadURL,
-      thumb: snapshot2.downloadURL,
+      original: originalSnapshot.downloadURL,
+      thumb: thumbSnapshot.downloadURL,
       fileName: data.file.name,
       name: data.name,
       desc: data.desc,
       createdAt: Date.now(),
     };
 
-    let phRef = await firebase.firebaseRef.child(`photographs`).push(ph);
+    const phRef = await firebase.firebaseRef.child(`photographs`).push(ph);
 
-    let fullPhotograph = {
+    const fullPhotograph = {
       ...ph,
       id: phRef.key,
     };
 
-    // if (data.isUpdate) {
-    //   dispatch(updatePhotograph(fullPhotograph));
-    //   dispatch(startDeletePhotographFile(data.fileToRemove));
-    // } else {
-      
-    // }
     dispatch(createPhotograph(fullPhotograph));
-    // dispatch(getPhotograph(fullPhotograph));
+    dispatch(getPhotograph(fullPhotograph));
 
     history.push(`${PHOTOGRAPH_EDIT}/${phRef.key}`);
   };
@@ -90,6 +86,8 @@ export const startUpdatePhotograph = (data) => {
       ...currentPhotograph,
       ...updates,
     }));
+
+    return Promise.resolve();
   };
 };
 
@@ -110,23 +108,6 @@ export const updatePhotograph = (updates, id) => {
   };
 };
 
-export const startDeletePhotographFile = (name) => {
-  return async (dispatch, getState) => {
-    const state = getState();
-    const currentPhotograph = getPhotographSelector(state);
-
-    await firebase.storageRef.child(`${state.profile.uid}/images/${name}`).delete();
-    await firebase.storageRef.child(`${state.profile.uid}/thumbs/${name}`).delete();
-
-    // dispatch(getPhotograph({
-    //   ...currentPhotograph,
-    //   fileName: null,
-    //   original: null,
-    //   thumb: null
-    // }));
-  };
-};
-
 export const startGetPhotograph = (id) => {
   return (dispatch, getState) => {
     firebase.firebaseRef.child(`photographs/${id}`).once('value', (snapshot) => {
@@ -137,6 +118,8 @@ export const startGetPhotograph = (id) => {
           ...photograph,
           id,
         }));
+      } else {
+        dispatch(failLoadPhotograph());
       }
     });
   };
@@ -147,6 +130,12 @@ export const getPhotograph = (photograph) => {
     type: PHOTOGRAPH_GET,
     payload: photograph,
   };
+};
+
+export const failLoadPhotograph = () => {
+  return {
+    type: PHOTOGRAPH_FAIL,
+  }
 };
 
 export const clearCurrentPhotograph = () => {
@@ -170,6 +159,8 @@ export const startGetPhotographs = () => {
         });
 
         dispatch(getPhotographs(photographs));
+      } else {
+        dispatch(failLoadPhotographs());
       }
     });
   };
@@ -182,6 +173,12 @@ const getPhotographs = (photographs) => {
   }
 };
 
+export const failLoadPhotographs = () => {
+  return {
+    type: PHOTOGRAPHS_FAIL,
+  };
+};
+
 export const startRemovePhotograph = (id, fileName) => {
   return async (dispatch, getState) => {
     const profile = getProfile(getState());
@@ -192,8 +189,11 @@ export const startRemovePhotograph = (id, fileName) => {
     await firebase.storageRef.child(`${profile.uid}/thumbs/${fileName}`).delete();
 
     dispatch(removePhotograph(id));
+    dispatch(clearCurrentPhotograph());
 
     history.replace(`${PHOTOGRAPH_CREATE_ROUTE}`);
+
+    return Promise.resolve();
   };
 };
 

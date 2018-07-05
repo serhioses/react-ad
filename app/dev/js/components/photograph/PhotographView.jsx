@@ -1,12 +1,16 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+import Loading from '@app-components/Loading';
 
 import {
   startGetPhotograph,
   clearCurrentPhotograph,
 } from '@app-actions/photograph';
 import { getPhotograph } from '@app-selectors/photograph';
+import { HOME } from '@app-constants/routes';
 
 export class PhotographView extends React.Component {
   constructor(props) {
@@ -17,11 +21,24 @@ export class PhotographView extends React.Component {
     this.props.startGetPhotograph(this.props.match.params.id);
   }
 
+  componentWillUnmount() {
+    this.props.clearCurrentPhotograph();
+  }
+
   render() {
     const { photograph } = this.props;
 
-    if (!photograph) {
-      return null;
+    if (photograph === null) {
+      return <div className="content">
+        <div className="container">
+          <Loading message="Loading photograph..." />
+        </div>
+      </div>;
+    }
+    if (photograph === false) {
+      return <Redirect to={{
+        pathname: HOME
+      }} />;
     }
 
     return (

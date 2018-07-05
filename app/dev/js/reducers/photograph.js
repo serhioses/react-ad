@@ -4,61 +4,87 @@ import {
   PHOTOGRAPH_GET,
   PHOTOGRAPH_CLEAR,
   PHOTOGRAPH_UPDATE,
-  PHOTOGRAPH_REMOVE
+  PHOTOGRAPH_REMOVE,
+  PHOTOGRAPH_FAIL,
+  PHOTOGRAPHS_FAIL
 } from '@app-constants/photograph';
 
-export const photographsReducer = (state = null, action) => {
+export const photographsReducer = (state = { photographs: [], loaded: false }, action) => {
   switch (action.type) {
     case PHOTOGRAPHS_GET: {
-      return action.payload;
+      // return action.payload;
+      return {
+        photographs: [...action.payload],
+        loaded: true,
+      };
     }
-    case PHOTOGRAPH_GET: {
-      if (!state) {
-        return [{
-          ...action.payload
-        }];
-      }
+    // case PHOTOGRAPH_GET: {
+    //   // if (!state) {
+    //   //   return [{
+    //   //     ...action.payload
+    //   //   }];
+    //   // }
 
-      return state.map((photograph) => {
-        if (photograph.id === action.payload.id) {
-          return {
-            ...action.payload,
-          };
-        }
+    //   return {
+    //     ...state,
+    //     photographs: state.photographs.map((photograph) => {
+    //       if (photograph.id === action.payload.id) {
+    //         return {
+    //           ...action.payload,
+    //         };
+    //       }
 
-        return {
-          ...photograph,
-        }
-      });
-    }
+    //       return {
+    //         ...photograph,
+    //       }
+    //     }),
+    //   };
+    // }
     case PHOTOGRAPH_CREATE: {
-      if (state) {
-        return [
-          ...state,
-          action.payload,
-        ];
-      }
+      // if (state) {
+      //   return [
+      //     ...state,
+      //     action.payload,
+      //   ];
+      // }
       
-      return [{
-        ...action.payload
-      }];
+      // return [{
+      //   ...action.payload
+      // }];
+      return {
+        ...state,
+        photographs: [...state.photographs, {...action.payload}],
+      }
     }
     case PHOTOGRAPH_UPDATE: {
-      return state.map((photograph) => {
-        if (photograph.id === action.payload.id) {
+      return {
+        ...state,
+        photographs: state.photographs.map((photograph) => {
+          if (photograph.id === action.payload.id) {
+            return {
+              ...photograph,
+              ...action.payload.updates,
+            };
+          }
+
           return {
             ...photograph,
-            ...action.payload.updates,
           };
-        }
-
-        return {
-          ...photograph,
-        };
-      });
+        })
+      };
     }
     case PHOTOGRAPH_REMOVE: {
-      return state.filter((photograph) => photograph.id !== action.payload);
+      return {
+        ...state,
+        photographs: state.photographs.filter((photograph) => photograph.id !== action.payload)
+      };
+    }
+    case PHOTOGRAPHS_FAIL: {
+      return {
+        ...state,
+        photographs: [],
+        loaded: true,
+      };
     }
   }
 
@@ -73,6 +99,9 @@ export const photographReducer = (state = null, action) => {
     }
     case PHOTOGRAPH_REMOVE: {
       return null;
+    }
+    case PHOTOGRAPH_FAIL: {
+      return false;
     }
   }
 

@@ -4,9 +4,10 @@ import { bindActionCreators } from 'redux';
 
 import PhotographCard from './PhotographCard';
 import Pagination from '@app-components/Pagination';
+import Loading from '@app-components/Loading';
 
 import { startGetPhotographs } from '@app-actions/photograph';
-import { getPhotographs } from '@app-selectors/photograph';
+import { getPhotographs, getPhotographsLoadingState } from '@app-selectors/photograph';
 import { getProfile } from '@app-selectors/auth';
 import { PHOTOGRAPHS_PER_PAGE } from '@app-constants/photograph';
 
@@ -22,7 +23,7 @@ export class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.props.photographs) {
+    if (!this.props.loaded) {
       this.props.startGetPhotographs();
     }
   }
@@ -31,17 +32,22 @@ export class Dashboard extends React.Component {
     this.setState({
       currentPage: pageNum,
     }, () => {
-      document.getElementById('photographs').scrollIntoView();
+      document.body.scrollIntoView();
     });
   }
 
   render() {
-    const { photographs, profile } = this.props;
+    const { photographs, loaded, profile } = this.props;
     const { currentPage } = this.state;
 
     const renderPhotographs = () => {
-      if (!photographs) {
-        return null;
+      if (!loaded) {
+        return <Loading message="Loading photographs..." />;
+      }
+      if (!photographs.length) {
+        return <div className="default-text">
+          <p>No photographs found.</p>
+        </div>;
       }
 
       return photographs
@@ -67,6 +73,7 @@ export class Dashboard extends React.Component {
 const mapStateToProps = (state) => {
   return {
     photographs: getPhotographs(state),
+    loaded: getPhotographsLoadingState(state),
     profile: getProfile(state),
   }
 };

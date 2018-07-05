@@ -8,9 +8,7 @@ import { PROFILE_STATE_PENDING } from '@app-constants/auth';
 
 const Loading = (props) => {
   return (
-    <div className="content">
-      <div className="page-loading">{props.message || 'Loading...'}</div>
-    </div>
+    <div className="page-loading">{props.message || 'Loading...'}</div>
   );
 };
 

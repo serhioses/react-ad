@@ -17,6 +17,7 @@
     background-color: #f9f9f9;
     font-size: get-font-size("small");
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    @extend .transition;
     &--active {
       background-color: get-color("blue");
       color: get-color("white");
@@ -26,6 +27,9 @@
       display: none;
       // opacity: 0.4;
       // cursor: default;
+    }
+    &:hover {
+      background-color: darken(#f9f9f9, 5%);
     }
     &:last-child {
       margin-right: 0;

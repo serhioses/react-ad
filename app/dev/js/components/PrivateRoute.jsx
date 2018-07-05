@@ -20,7 +20,11 @@ const PrivateRoute = ({ component: Component, profile, ...rest }) => {
     render={(props) => {
       if (profile === PROFILE_STATE_PENDING) {
         // return <Loading from={props.location} />;
-        return <Loading message="Please, wait..." />;
+        return <div className="content">
+          <div className="container">
+            <Loading message="Please, wait..." />
+          </div>
+        </div>;
       } else if (profile) {
         return <Component {...props} />;
       }

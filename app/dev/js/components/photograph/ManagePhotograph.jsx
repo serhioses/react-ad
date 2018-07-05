@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -10,12 +10,12 @@ import {
   startPublishPhotograph,
   startGetPhotograph,
   clearCurrentPhotograph,
-  startDeletePhotographFile,
   startUpdatePhotograph,
   startRemovePhotograph
 } from '@app-actions/photograph';
 import { getPhotograph } from '@app-selectors/photograph';
 import { PHOTOGRAPH_THUMB_WIDTH, PHOTOGRAPH_THUMB_HEIGHT } from '@app-constants/photograph';
+import { HOME, PHOTOGRAPH_CREATE } from '@app-constants/routes';
 
 export class ManagePhotograph extends React.Component {
   constructor(props) {
@@ -47,7 +47,7 @@ export class ManagePhotograph extends React.Component {
 
       img.onload = function () {
         canvas.width = PHOTOGRAPH_THUMB_WIDTH;
-        canvas.height = PHOTOGRAPH_THUMB_HEIGHT;
+        canvas.height = PHOTOGRAPH_THUMB_WIDTH / (this.naturalWidth / this.naturalHeight);
 
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
@@ -83,16 +83,32 @@ export class ManagePhotograph extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.currentPhotograph) {
+    // console.log(this.props);
+    // console.log(nextProps);
+    // to do with back
+    if ((nextProps.currentPhotograph && !this.props.currentPhotograph)) {
       this.refresh(nextProps.currentPhotograph);
+    }
+    if (this.props.currentPhotograph && this.props.match.params.id && nextProps.match.path === PHOTOGRAPH_CREATE) {
+      console.log(1);
+      this.props.clearCurrentPhotograph();
+      this.refresh();
     }
   }
 
   componentWillUnmount() {
     if (this.props.currentPhotograph) {
-      this.props.clearCurrentPhotograph(this.props.currentPhotograph.fileName);
+      this.props.clearCurrentPhotograph();
     }
   }
+
+  // componentDidUpdate(prevProps) {
+  //   // console.log(arguments);
+  //   if (prevProps.currentPhotograph && prevProps.match.params.id) {
+  //     this.props.clearCurrentPhotograph();
+  //     this.refresh();
+  //   }
+  // }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -121,6 +137,10 @@ export class ManagePhotograph extends React.Component {
             desc: this.state.desc,
             id: this.props.currentPhotograph.id,
             fileToRemove: this.state.fileToRemove,
+          }).then(() => {
+            this.setState({
+              processing: false,
+            });
           });
         });
       } else {
@@ -128,6 +148,10 @@ export class ManagePhotograph extends React.Component {
           name: this.state.name,
           desc: this.state.desc,
           id: this.props.currentPhotograph.id,
+        }).then(() => {
+          this.setState({
+            processing: false,
+          });
         });
       }
     } else {
@@ -140,29 +164,6 @@ export class ManagePhotograph extends React.Component {
         });
       });
     }
-
-    // ManagePhotograph.crop(this.state.file, (thumb) => {
-    //   if (this.props.currentPhotograph) {
-    //     this.props.startUpdatePhotograph({
-    //       thumb,
-    //       file: this.state.file,
-    //       name: this.state.name,
-    //       desc: this.state.desc,
-    //       id: this.props.currentPhotograph.id,
-    //       fileToRemove: this.state.fileToRemove,
-    //     });
-    //   } else {
-    //     this.props.startPublishPhotograph({
-    //       thumb,
-    //       file: this.state.file,
-    //       name: this.state.name,
-    //       desc: this.state.desc,
-    //       // isUpdate: !!this.props.currentPhotograph,
-    //       // id: this.props.currentPhotograph && this.props.currentPhotograph.id,
-    //       // fileToRemove: this.state.fileToRemove,
-    //     });
-    //   }
-    // });
   }
 
   onFileChange(e) {
@@ -186,14 +187,25 @@ export class ManagePhotograph extends React.Component {
   }
 
   refresh(photograph) {
-    this.setState({
-      name: photograph.name,
-      desc: photograph.desc,
-      bg: photograph.original,
-      processing: false,
-      showBrowseButton: !photograph.original,
-      file: !!photograph.original,
-    });
+    if (photograph) {
+      this.setState({
+        name: photograph.name,
+        desc: photograph.desc,
+        bg: photograph.original,
+        processing: false,
+        showBrowseButton: !photograph.original,
+        file: !!photograph.original,
+      });
+    } else {
+      this.setState({
+        name: '',
+        desc: '',
+        bg: null,
+        processing: false,
+        showBrowseButton: true,
+        file: null,
+      });
+    }
   }
 
   removeFile() {
@@ -203,8 +215,6 @@ export class ManagePhotograph extends React.Component {
       showBrowseButton: true,
       fileToRemove: this.props.currentPhotograph.fileName,
     });
-    // this.props.startDeletePhotographFile(this.props.currentPhotograph.fileName);
-    // console.log(this.props.currentPhotograph.fileName);
   }
 
   showModal() {
@@ -225,16 +235,25 @@ export class ManagePhotograph extends React.Component {
       processing: true,
     });
 
-    this.props.startRemovePhotograph(this.props.currentPhotograph.id, this.props.currentPhotograph.fileName);
+    this.props.startRemovePhotograph(this.props.currentPhotograph.id, this.props.currentPhotograph.fileName).then(() => {
+      this.refresh();
+    });
   }
 
   render() {
-    // delete on submit
-    // separate publish from update
     const { currentPhotograph, match } = this.props;
 
-    if (match.params.id && !currentPhotograph) {
-      return <Loading message="Loading data..." />;
+    if (match.params.id && currentPhotograph === null) {
+      return <div className="content">
+        <div className="container">
+          <Loading message="Loading data..." />
+        </div>
+      </div>;
+    }
+    if (currentPhotograph === false) {
+      return <Redirect to={{
+        pathname: HOME
+      }} />;
     }
 
     const renderBrowseFile = () => {
@@ -278,11 +297,11 @@ export class ManagePhotograph extends React.Component {
               <div className="photograph__form">
                 {renderBrowseFile()}
                 <div className="form-group">
-                  <input className="form-field" type="text" name="name" defaultValue={this.state.name} placeholder="Name" autoComplete="false" onChange={this.onInputChange} />
+                  <input className="form-field" type="text" name="name" value={this.state.name} placeholder="Name" autoComplete="false" onChange={this.onInputChange} />
                   {this.state.nameError ? <p className="form-error">Please, enter a photograph name.</p> : null}
                 </div>
                 <div className="form-group">
-                  <textarea className="form-group__area form-field" name="desc" defaultValue={this.state.desc} placeholder="Desc" autoComplete="false" onChange={this.onInputChange}></textarea>
+                  <textarea className="form-group__area form-field" name="desc" value={this.state.desc} placeholder="Desc" autoComplete="false" onChange={this.onInputChange}></textarea>
                   {this.state.descError ? <p className="form-error">Please, enter a photograph description.</p> : null}
                 </div>
                 <div className="form-group c-text-center">
@@ -295,7 +314,6 @@ export class ManagePhotograph extends React.Component {
             </form>
           </div>
         </div>
-        {/*{this.state.showConfirmRemoveModal ? <ConfirmRemoveModal isOpen={true} onClose={this.cancel} onConfirm={this.confirm} /> : null}*/}
         <ConfirmRemoveModal isOpen={this.state.showConfirmRemoveModal} onClose={this.cancel} onConfirm={this.confirm} />
       </div>
     );
@@ -312,7 +330,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   startPublishPhotograph,
   startGetPhotograph,
   clearCurrentPhotograph,
-  startDeletePhotographFile,
   startUpdatePhotograph,
   startRemovePhotograph,
 }, dispatch);

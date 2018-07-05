@@ -1,6 +1,11 @@
 // Constants
 .c-flex {
   display: flex;
+  &--dir {
+    &_column {
+      flex-direction: column;
+    }
+  }
   &--ai {
     &_center {
       align-items: center;

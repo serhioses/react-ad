@@ -58,11 +58,9 @@ export const startAuthStateChange = () => {
   return (dispatch, getState) => {
     return appAuth.authStateChange((user) => {
       if (user) {
-        // dispatch(setLoadingState('auth'));
         dispatch(continueSignIn(user));
       } else {
         dispatch(signOut());
-        // dispatch(setLoadingState('loaded'));
       }
     });
   };
