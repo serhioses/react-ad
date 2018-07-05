@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Router,
   Route,
-  Redirect,
   Switch
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -20,20 +19,17 @@ import ManagePhotograph from '@app-components/photograph/ManagePhotograph';
 import PhotographView from '@app-components/photograph/PhotographView';
 import Dashboard from '@app-components/photograph/Dashboard';
 import PrivateRoute from '@app-components/PrivateRoute';
-import Loading from '@app-components/Loading';
 import NotFound from '@app-components/NotFound';
 
 import * as routes from '@app-constants/routes';
 import { startAuthStateChange } from '@app-actions/auth';
-import { startGetPhotographs } from '@app-actions/photograph';
-import { firebase } from '@app-firebase';
 import configureStore from '@app-store';
 
 let store = configureStore();
 store.subscribe(() => {
   let state = store.getState();
 
-  // console.log(state);
+  console.log(state);
 });
 store.dispatch(startAuthStateChange());
 

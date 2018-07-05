@@ -83,26 +83,15 @@ export class ManagePhotograph extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // console.log(this.props);
-    // console.log(nextProps);
-    // to do with back
     if ((nextProps.currentPhotograph && !this.props.currentPhotograph)) {
-      console.log(1);
       this.refresh(nextProps.currentPhotograph);
     }
     if (!nextProps.currentPhotograph && nextProps.match.params.id && !this.props.currentPhotograph) {
-      console.log(2);
       this.props.startGetPhotograph(nextProps.match.params.id);
     }
     if (nextProps.match.path === PHOTOGRAPH_CREATE && !nextProps.currentPhotograph && this.props.currentPhotograph) {
-      console.log(3);
       this.refresh();
     }
-    // if (this.props.currentPhotograph && this.props.match.params.id && nextProps.match.path === PHOTOGRAPH_CREATE) {
-    //   console.log(1);
-    //   this.props.clearCurrentPhotograph();
-    //   this.refresh();
-    // }
   }
 
   componentWillUnmount() {
@@ -110,14 +99,6 @@ export class ManagePhotograph extends React.Component {
       this.props.clearCurrentPhotograph();
     }
   }
-
-  // componentDidUpdate(prevProps) {
-  //   // console.log(arguments);
-  //   if (prevProps.currentPhotograph && prevProps.match.params.id) {
-  //     this.props.clearCurrentPhotograph();
-  //     this.refresh();
-  //   }
-  // }
 
   handleSubmit(e) {
     e.preventDefault();

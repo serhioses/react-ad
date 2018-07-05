@@ -13,10 +13,6 @@ export default class ConfirmRemoveModal extends React.Component {
     this.confirm = this.confirm.bind(this);
   }
 
-  cancel() {
-
-  }
-
   confirm() {
     this.props.onConfirm();
   }

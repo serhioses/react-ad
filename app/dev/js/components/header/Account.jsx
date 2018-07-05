@@ -23,7 +23,6 @@ export class Account extends React.Component {
           <div className="account__inner c-flex c-flex--ai_center">
             <div className="account__photo bg-image" style={{ backgroundImage: `url("${profile.photoURL}")` }}></div>
             <SignOutButton className="account__link" />
-            {/*<Link className="account__link" to={routes.SIGN_OUT}>Sign Out</Link>*/}
           </div>
         </React.Fragment>;
       }

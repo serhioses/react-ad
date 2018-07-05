@@ -4,22 +4,20 @@ import {
   Redirect,
   withRouter,
 } from 'react-router-dom';
-import { Provider } from 'react-redux';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 // components
 import Loading from '@app-components/Loading';
 
 import * as routes from '@app-constants/routes';
 import { PROFILE_STATE_PENDING } from '@app-constants/auth';
+import { getProfile } from '@app-selectors/auth';
 
 const PrivateRoute = ({ component: Component, profile, ...rest }) => {
   return <Route
     {...rest}
     render={(props) => {
       if (profile === PROFILE_STATE_PENDING) {
-        // return <Loading from={props.location} />;
         return <div className="content">
           <div className="container">
             <Loading message="Please, wait..." />
@@ -39,11 +37,9 @@ const PrivateRoute = ({ component: Component, profile, ...rest }) => {
   />;
 }
 
-// export default PrivateRoute;
-
 const mapStateToProps = (state) => {
   return {
-    profile: state.profile,
+    profile: getProfile(state),
   }
 };
 

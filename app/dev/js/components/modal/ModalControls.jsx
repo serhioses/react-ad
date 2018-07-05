@@ -1,8 +1,6 @@
 import React from 'react';
 
 const ModalControls = (props) => {
-  const { title } = props;
-
   const clonedChildren = React.Children.map(props.children, (child, index) => {
     return React.cloneElement(child, {
       open: props.open,
