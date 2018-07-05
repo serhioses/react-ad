@@ -14,7 +14,7 @@ import {
   startRemovePhotograph
 } from '@app-actions/photograph';
 import { getPhotograph } from '@app-selectors/photograph';
-import { PHOTOGRAPH_THUMB_WIDTH, PHOTOGRAPH_THUMB_HEIGHT } from '@app-constants/photograph';
+import { PHOTOGRAPH_THUMB_WIDTH } from '@app-constants/photograph';
 import { HOME, PHOTOGRAPH_CREATE } from '@app-constants/routes';
 
 export class ManagePhotograph extends React.Component {
@@ -87,13 +87,22 @@ export class ManagePhotograph extends React.Component {
     // console.log(nextProps);
     // to do with back
     if ((nextProps.currentPhotograph && !this.props.currentPhotograph)) {
+      console.log(1);
       this.refresh(nextProps.currentPhotograph);
     }
-    if (this.props.currentPhotograph && this.props.match.params.id && nextProps.match.path === PHOTOGRAPH_CREATE) {
-      console.log(1);
-      this.props.clearCurrentPhotograph();
+    if (!nextProps.currentPhotograph && nextProps.match.params.id && !this.props.currentPhotograph) {
+      console.log(2);
+      this.props.startGetPhotograph(nextProps.match.params.id);
+    }
+    if (nextProps.match.path === PHOTOGRAPH_CREATE && !nextProps.currentPhotograph && this.props.currentPhotograph) {
+      console.log(3);
       this.refresh();
     }
+    // if (this.props.currentPhotograph && this.props.match.params.id && nextProps.match.path === PHOTOGRAPH_CREATE) {
+    //   console.log(1);
+    //   this.props.clearCurrentPhotograph();
+    //   this.refresh();
+    // }
   }
 
   componentWillUnmount() {

@@ -14,7 +14,7 @@ html {
 body {
   background-color: get-color("white");
   color: get-color("darkGray");
-  font-family: get-font("main");
+  font-family: unquote(get-font("main"));
   font-size: 100%;
   -webkit-tap-highlight-color: transparent;
 }

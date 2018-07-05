@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+import CreatePhotographLink from './CreatePhotographLink';
+
 import * as routes from '@app-constants/routes';
 
 export default class Nav extends React.Component {
@@ -47,7 +49,7 @@ export default class Nav extends React.Component {
         <nav className={`nav ${isOpen ? "nav--active" : ""}`}>
           <NavLink className="nav__link" activeClassName="nav__link--active" exact to={routes.HOME} onClick={this.toggleNav}>Home</NavLink>
           <NavLink className="nav__link" activeClassName="nav__link--active" to={routes.ABOUT} onClick={this.toggleNav}>About</NavLink>
-          <NavLink className="nav__link" activeClassName="nav__link--active" to={routes.PHOTOGRAPH_CREATE} onClick={this.toggleNav}>Add Photograph</NavLink>
+          <CreatePhotographLink toggleNav={this.toggleNav} />
           <NavLink className="nav__link" activeClassName="nav__link--active" to={routes.DASHBOARD} onClick={this.toggleNav}>Dashboard</NavLink>
         </nav>
         <div className={`nav-overlay ${isOpen ? "nav-overlay--active" : ""} hidden-sm`} onClick={this.toggleNav}></div>
