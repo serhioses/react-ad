@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Modal from '@app-components/Modal/Modal';
-import ModalHeader from '@app-components/Modal/ModalHeader';
-import ModalFooter from '@app-components/Modal/ModalFooter';
-import ModalControls from '@app-components/Modal/ModalControls';
-import ModalContent from '@app-components/Modal/ModalContent';
+import Modal from '@app-components/modal/Modal';
+import ModalHeader from '@app-components/modal/ModalHeader';
+import ModalFooter from '@app-components/modal/ModalFooter';
+import ModalControls from '@app-components/modal/ModalControls';
+import ModalContent from '@app-components/modal/ModalContent';
 
 export default class ConfirmRemoveModal extends React.Component {
   constructor(props) {
