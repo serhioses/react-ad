@@ -72,9 +72,9 @@ module.exports = {
       }
     })
   ],
-  optimization: {
-    minimizer: minimizer,
-  },
+  // optimization: {
+  //   minimizer: minimizer,
+  // },
   devtool: isDevelopment ? 'cheap-inline-module-source-map' : false,
   watch: isDevelopment,
   mode: process.env.NODE_ENV
