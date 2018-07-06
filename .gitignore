@@ -2,5 +2,4 @@
 /package-lock.json
 /.sass-cache/
 /app/dist/js/
-/app/dist/css/
 config/
