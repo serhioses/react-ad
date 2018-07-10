@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 
 import { userReducer, reffererReducer } from '@app-reducers/auth';
 import { photographsReducer, photographReducer } from '@app-reducers/photograph';
+import { filtersReducer } from '@app-reducers/filters';
 
 export default (function () {
   let store;
@@ -19,6 +20,7 @@ export default (function () {
       refferer: reffererReducer,
       photographs: photographsReducer,
       currentPhotograph: photographReducer,
+      filters: filtersReducer,
     });
 
     store = redux.createStore(reducer, initialState, redux.compose(

@@ -59,7 +59,7 @@ const App = () => {
             component={ManagePhotograph} />
           <PrivateRoute exact path={`${routes.PHOTOGRAPH_EDIT}/:id`}
             component={ManagePhotograph} />
-            <PrivateRoute exact path={`${routes.PHOTOGRAPH_VIEW}/:id`}
+          <Route exact path={`${routes.PHOTOGRAPH_VIEW}/:id`}
             component={PhotographView} />
           <Route
             exact path={routes.DASHBOARD}

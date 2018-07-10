@@ -43,7 +43,7 @@
 }
 
 .row {
-  margin: -15px;
+  margin: 0 -15px;
   font-size: 0;
 }
 
@@ -979,9 +979,10 @@ input:checked + .checkbox:after {
   cursor: default;
 }
 .pagination__item--disabled {
-  display: none;
+  opacity: 0.4;
+  cursor: default;
 }
-.pagination__item:hover {
+.pagination__item:hover:not(.pagination__item--active, .pagination__item--disabled) {
   background-color: #ececec;
 }
 .pagination__item:last-child {

@@ -11,7 +11,7 @@
 }
 
 .row {
-  margin: 0 -($gutter / 2);
+  margin: 0 (-($gutter / 2));
   font-size: 0;
   @extend .clearfix;
 }

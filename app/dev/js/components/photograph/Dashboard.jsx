@@ -7,8 +7,10 @@ import Pagination from '@app-components/Pagination';
 import Loading from '@app-components/Loading';
 
 import { startGetPhotographs } from '@app-actions/photograph';
+import { search } from '@app-actions/filters';
 import { getPhotographs, getPhotographsLoadingState } from '@app-selectors/photograph';
 import { getProfile } from '@app-selectors/auth';
+import { getFilters, getFilteredPhotographs } from '@app-selectors/filters';
 import { PHOTOGRAPHS_PER_PAGE } from '@app-constants/photograph';
 
 export class Dashboard extends React.Component {
@@ -17,9 +19,12 @@ export class Dashboard extends React.Component {
 
     this.state = {
       currentPage: 0,
+      searchText: ''
     };
 
     this.onPageChange = this.onPageChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    this.setSearchText = this.setSearchText.bind(this);
   }
 
   componentDidMount() {
@@ -33,6 +38,18 @@ export class Dashboard extends React.Component {
       currentPage: pageNum,
     }, () => {
       document.body.scrollIntoView();
+    });
+  }
+
+  handleSearch(e) {
+    e.preventDefault();
+
+    this.props.search(this.state.searchText.toLowerCase());
+  }
+
+  setSearchText(e) {
+    this.setState({
+      searchText: e.target.value,
     });
   }
 
@@ -60,6 +77,10 @@ export class Dashboard extends React.Component {
     return (
       <div className="content">
         <div id="photographs" className="container">
+          <form onSubmit={this.handleSearch}>
+            <input className="form-field" placeholder="Search..." onChange={this.setSearchText} />
+            <button type="submit">Find</button>
+          </form>
           <div className="row">
             {renderPhotographs()}
           </div>
@@ -72,14 +93,17 @@ export class Dashboard extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    photographs: getPhotographs(state),
+    // photographs: getPhotographs(state),
+    photographs: getFilteredPhotographs(state),
     loaded: getPhotographsLoadingState(state),
     profile: getProfile(state),
+    filters: getFilters(state),
   }
 };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   startGetPhotographs,
+  search,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
