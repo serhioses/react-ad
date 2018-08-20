@@ -33,5 +33,6 @@ gulp.task('styles', function () {
 gulp.task('watch', function () {
   gulp.watch(paths.sass + '/**/*.scss', gulp.series('styles'));
 });
+gulp.task('build', gulp.series('styles'));
 
-gulp.task('default', gulp.parallel('watch', gulp.series('styles')));
+gulp.task('default', isDevelopment ? gulp.parallel('watch', gulp.series('styles')) : gulp.series('build'));
